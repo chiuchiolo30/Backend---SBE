@@ -1,13 +1,7 @@
 //============================================================================
 // Configuración a la conexión de la base de datos
 //============================================================================
-module.exports.CONFIG = {
-    username: 'admin',
-    password: '1234',
-    database: 'SBE-PEAN',
-    host    : 'localhost',
-    dialect : 'postgres',
-};
+
 
 //============================================================================
 // Semilla para generar el token
