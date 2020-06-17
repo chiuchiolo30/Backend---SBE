@@ -33,6 +33,7 @@ db.conectarDB();
 const appRoutes = require('./routes/app');
 const usuarioRoutes = require('./routes/usuario.route');
 const loginRoutes = require('./routes/login.route');
+const empresaRoutes = require('./routes/empresa.route');
 
 
 
@@ -42,6 +43,7 @@ const loginRoutes = require('./routes/login.route');
 //============================================================================
 app.use('/usuario', usuarioRoutes);
 app.use('/login', loginRoutes);
+app.use('/empresa', empresaRoutes);
 app.use('/', appRoutes);
 
 
