@@ -6,7 +6,9 @@ const empresaSchema = new Schema({
 				direccion : {	type: String,	required: [true,	'La dirección es necesaria']	},
 				cuit      : {	type: String,	required: [true,	'El	CUIT es	necesario']	},
 				img       : {	type: String,	required: false },
-				usuario   : {	type: Schema.Types.ObjectId, ref: 'Usuario' }},
-				{ collection: 'empresas'});
+				empleados : [{	type: Schema.Types.ObjectId, ref: 'Empleado' }],
+				usuario   : {	type: Schema.Types.ObjectId, ref: 'Usuario' }
+			},
+			{ collection: 'empresas'});
 
 module.exports =	mongoose.model('Empresa', empresaSchema);

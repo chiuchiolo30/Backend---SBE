@@ -34,6 +34,8 @@ const appRoutes = require('./routes/app');
 const usuarioRoutes = require('./routes/usuario.route');
 const loginRoutes = require('./routes/login.route');
 const empresaRoutes = require('./routes/empresa.route');
+const alumnoRoutes = require('./routes/alumno.route');
+const empleadoRoutes = require('./routes/empleado.route');
 
 
 
@@ -44,6 +46,8 @@ const empresaRoutes = require('./routes/empresa.route');
 app.use('/usuario', usuarioRoutes);
 app.use('/login', loginRoutes);
 app.use('/empresa', empresaRoutes);
+app.use('/alumno', alumnoRoutes);
+app.use('/empleado', empleadoRoutes);
 app.use('/', appRoutes);
 
 

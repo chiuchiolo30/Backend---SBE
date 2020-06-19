@@ -10,3 +10,4 @@ const personaSchema = new Schema({
 				{ collection: 'personas'});
 
 module.exports =	mongoose.model('Persona', personaSchema);
+// module.exports = personaSchema;

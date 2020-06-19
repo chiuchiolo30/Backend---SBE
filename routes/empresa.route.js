@@ -5,14 +5,10 @@
 // =================================
 //	Requires
 // =================================
-const express = require('express');
-
+const express         = require('express');
 const mdAutenticacion = require('../middleware/autenticacion');
-
-
-const app     = express();
-// Importamos el esquema del hospital
-const Empresa = require('../models/empresa.model');
+const app             = express();
+const Empresa         = require('../models/empresa.model');
 
 // =============================================================================
 // Obtener todas las empresas -> OK
