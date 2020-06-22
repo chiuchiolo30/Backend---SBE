@@ -1,22 +1,21 @@
 /*jshint esversion: 6 */ 
 
 // =================================
-//	            Convenio
+//	            Acuerdo
 // =================================    
 // =================================
 //	            Requires
 // =================================
 const express         = require('express');
 const mdAutenticacion = require('../middleware/autenticacion');
-const Persona         = require('../models/persona.model');
-const Convenio        = require('../models/convenio.model');
+const Acuerdo        = require('../models/acuerdo.model');
 
 
 
 const app     = express();
 
 // =============================================================================
-// Obtener todos los convenios -> OK
+// Obtener todos los acuerdos -> OK
 // =============================================================================
 
 app.get('/', (req, res, next ) => {
@@ -24,25 +23,25 @@ app.get('/', (req, res, next ) => {
     let desde = req.query.desde || 0;
     desde = Number(desde);
 
-    Convenio.find({})
+    Acuerdo.find({})
             .skip(desde)
             .limit(5)
-            .populate('usuario', 'nombre email')
+            .populate('usuario' ,  'nombre email')            
             .exec(        
-                (err, convenios ) => {
+                (err, acuerdos ) => {
 
                 if ( err ) {
                     return res.status(500).json({
                         ok: false,
-                        mensaje: 'Error cargando convenio',
+                        mensaje: 'Error cargando acuerdo',
                         errors: err
                     });
                 }
-                Convenio.countDocuments({}, (err, conteo) => {
+                Acuerdo.countDocuments({}, (err, conteo) => {
 
                     res.status(200).json({
                         ok: true,
-                        convenios: convenios,
+                        acuerdos: acuerdos,
                         total: conteo
                     });
                 });
@@ -52,31 +51,31 @@ app.get('/', (req, res, next ) => {
 });
 
 // ==========================================
-// Obtener Convenio por ID
+// Obtener Acuerdo por ID -> OK
 // ==========================================
 app.get('/:id', (req, res) => {
     const id = req.params.id;
-    Convenio.findById(id)
+    Acuerdo.findById(id)
                 .populate('usuario', 'nombre email')
-                .exec((err, convenio) => {
+                .exec((err, acuerdo) => {
                     if (err) {
                         return res.status(500).json({
                             ok: false,
-                            mensaje: 'Error al buscar convenio',
+                            mensaje: 'Error al buscar acuerdo',
                             errors: err
                             });
                     }
-                    if (!convenio) {
+                    if (!acuerdo) {
                         return res.status(400).json({
                             ok: false,
-                            mensaje: `El convenio con el id ${id} no existe`,
-                            errors: { message: 'No existe un convenio con ese ID' }
+                            mensaje: `El acuerdo con el id ${id} no existe`,
+                            errors: { message: 'No existe un acuerdo con ese ID' }
                             });
                     }
 
                     res.status(200).json({
                         ok: true,
-                        convenio: convenio
+                        acuerdo: acuerdo
                         });
                 });
             });
@@ -85,46 +84,50 @@ app.get('/:id', (req, res) => {
 
 
 //============================================================================
-// Actualizar Convenio
+// Actualizar Acuerdo -> OK
 //============================================================================
 app.put('/:id',  (req, res) => {
 
     const id = req.params.id;
     const body = req.body;
 
-    Convenio.findById( id, (err, convenio) => {
+    Acuerdo.findById( id, (err, acuerdo) => {
 
 
            if ( err ) {
                 return res.status(500).json({
                         ok: false,
-                        mensaje: 'Error al actualizar convenio',
+                        mensaje: 'Error al actualizar acuerdo',
                         errors: err
                 });
            }
-           if ( !convenio ) {
+           if ( !acuerdo ) {
                 return res.status(400).json({
                         ok: false ,
-                        mensaje: 'El convenio con el id '+ id + ' no existe',
-                        errors: { message: 'No existe un convenio con ese ID' }
+                        mensaje: 'El acuerdo con el id '+ id + ' no existe',
+                        errors: { message: 'No existe un acuerdo con ese ID' }
                  });
            }
-           convenio.nombre = body.nombre;
-           convenio.inicio = body.inicio;
-           convenio.fin = body.fin;
-           convenio.numeroExpediente = body.numeroExpediente;
+           acuerdo.nombre           = body.nombre;
+           acuerdo.inicio           = body.inicio;
+           acuerdo.fin              = body.fin;
+           caracteristicas          = body.caracteristicas;
+           observaciones            = body.observaciones;
+           acuerdo.numeroExpediente = body.numeroExpediente;
+           obraSocial               = body.obraSocial;
+           art                      = body.art;
               
-           convenio.save( (err, convenioGuardado) => {            
+           acuerdo.save( (err, acuerdoGuardado) => {            
                 if ( err ) {
                     return res.status(400).json({
                             ok: false,
-                            mensaje: 'Error al actualizar el convenio',
+                            mensaje: 'Error al actualizar el acuerdo',
                             errors: err
                     });
                 }
                 res.status(200).json({
                     ok: true,
-                    convenio: convenioGuardado
+                    acuerdo: acuerdoGuardado
                 });
            });
     });           
@@ -133,38 +136,43 @@ app.put('/:id',  (req, res) => {
 
 
 // =============================================================================
-// Crear un nuevo convenio -> OK
+// Crear un nuevo acuerdo -> OK
 // =============================================================================
 
 app.post('/', mdAutenticacion.verificaToken, (req, res) => {
     const body = req.body;    
-    const convenio = new Convenio({
-       nombre               : body.nombre,
-       inicio               : body.inicio,
-       fin                  : body.fin,
-       numeroExpediente     : body.numeroExpediente,
-       tipoConvenio         : body.tipoConvenio,
-       empresa              : body.empresa,
-       empleado             : body.empleado,
-       usuario              : req.usuario._id
+    const acuerdo = new Acuerdo({
+       nombre             : body.nombre,
+       areaDeTrabajo      : body.areaDeTrabajo,
+       asignacionMensual  : body.asignacionMensual,
+       obraSocial         : body.obraSocial,
+       art                : body.art,
+       numeroExpediente   : body.numeroExpediente,
+       inicio             : body.inicio,
+       fin                : body.fin,
+       caracteristicas    : body.caracteristicas,       
+       observaciones      : body.observaciones,
+       empleado           : body.empleado,
+       convenio           : body.convenio,
+       usuario            : req.usuario._id
        
     });
 
    
 
-    convenio.save( ( err, convenioGuardado )=> {
+    acuerdo.save( ( err, acuerdoGuardado )=> {
         
         if ( err ) {
             return res.status(400).json({
                 ok: false,
-                mensaje: 'Error al crear convenio',
+                mensaje: 'Error al crear acuerdo',
                 errors: err
             });
         }
     
         res.status(201).json({
             ok: true,
-            convenio: convenioGuardado,
+            acuerdo: acuerdoGuardado,
             usuarioToken: req.usuario
             
         });
@@ -176,33 +184,33 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
 });
 
 //============================================================================
-// Borrar un convenio por el id -> OK - fisicamente
+// Borrar un acuerdo por el id -> OK - fisicamente
 //============================================================================
 
 app.delete('/:id', mdAutenticacion.verificaToken, (req, res) => {
 
     const id = req.params.id;
 
-    Convenio.findByIdAndRemove(id, ( err, convenioBorrado ) =>{
+    Acuerdo.findByIdAndRemove(id, ( err, acuerdoBorrado ) =>{
 
         if ( err ) {
             return res.status(500).json({
                         ok: false,
-                        mensaje: 'Error al borrar convenio',
+                        mensaje: 'Error al borrar acuerdo',
                         errors: err
                     });
         }
-        if ( !convenioBorrado ) {
+        if ( !acuerdoBorrado ) {
                 return res.status(400).json({
                             ok: false,
-                            mensaje: 'No existe un convenio con el id: ' + id + '',
-                            errors: { message: 'No existe un convenio con el id: ' + id + ''}
+                            mensaje: 'No existe un acuerdo con el id: ' + id + '',
+                            errors: { message: 'No existe un acuerdo con el id: ' + id + ''}
                 });
         }
 
         res.status(200).json({
             ok: true,
-            convenio: convenioBorrado
+            acuerdo: acuerdoBorrado
         });
     });
 

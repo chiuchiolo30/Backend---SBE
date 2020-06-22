@@ -31,12 +31,13 @@ db.conectarDB();
 // Importar rutas
 //============================================================================
 const appRoutes = require('./routes/app');
-const usuarioRoutes = require('./routes/usuario.route');
-const loginRoutes = require('./routes/login.route');
-const empresaRoutes = require('./routes/empresa.route');
-const alumnoRoutes = require('./routes/alumno.route');
-const empleadoRoutes = require('./routes/empleado.route');
-const convenioRoutes = require('./routes/convenio.route');
+const usuarioRoutes = require('./routes/usuario.routes');
+const loginRoutes = require('./routes/login.routes');
+const empresaRoutes = require('./routes/empresa.routes');
+const alumnoRoutes = require('./routes/alumno.routes');
+const empleadoRoutes = require('./routes/empleado.routes');
+const convenioRoutes = require('./routes/convenio.routes');
+const acuerdoRoutes = require('./routes/acuerdo.routes');
 
 
 
@@ -50,6 +51,7 @@ app.use('/empresa', empresaRoutes);
 app.use('/alumno', alumnoRoutes);
 app.use('/empleado', empleadoRoutes);
 app.use('/convenio', convenioRoutes);
+app.use('/acuerdo', acuerdoRoutes);
 app.use('/', appRoutes);
 
 
